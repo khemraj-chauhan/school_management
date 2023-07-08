@@ -1,0 +1,21 @@
+<div id="<%= dom_id school %>">
+  <p>
+    <strong>School Id:</strong>
+    <%= school.id %>
+  </p>
+
+  <p>
+    <strong>Name:</strong>
+    <%= school.name %>
+  </p>
+
+  <p>
+    <strong>Address:</strong>
+    <%= school.address&.full_address %>
+  </p>
+
+  <p>
+    <strong>School Admin:</strong>
+    <%= school.admins.pluck(:name).join(", ") %>
+  </p>
+</div>

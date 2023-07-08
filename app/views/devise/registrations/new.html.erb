@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row">
+    <div class="register pull-right">
+      <div class="header">
+        <h1>Sign up</h1>
+      </div>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= devise_error_messages! %>
+
+        <div class="form-group clearfix">
+          <%= f.label :name %>
+          <%= f.text_field :name, placeholder: 'e.g. Jon' %>
+        </div>
+
+        <div class="form-group clearfix">
+          <%= f.label :email %>
+          <%= f.email_field :email, placeholder: 'e.g. jon@snow.com' %>
+        </div>
+
+        <div class="form-group clearfix">
+          <%= f.label :phone %>
+          <%= f.text_field :phone, placeholder: 'e.g. 1829390910' %>
+        </div>
+
+        <div class="form-group clearfix">
+          <%= f.label :password %>
+          <%= f.password_field :password, autocomplete: "off" %>
+        </div>
+
+        <div class="form-group clearfix">
+          <%= f.label :password_confirmation %>
+          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Sign up", class: "btn btn-default btn-orange" %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
