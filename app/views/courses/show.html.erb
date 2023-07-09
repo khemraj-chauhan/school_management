@@ -2,13 +2,13 @@
 
 <%= render @course %>
 
-<!-- <%= link_to "Manage Batches", school_courses_path(@school)%> -->
+<%= link_to "Manage Batches", batches_path(course_id: @course.id) %>
 
 <div>
   <%= link_to "Edit this course", edit_school_course_path %> |
-  <%= link_to "Back to batches", school_courses_path %>
+  <%= link_to "Back to courses", school_courses_path %>
 
   <% if !current_user.student? %>
-    <%= button_to "Destroy this school", school_course_path, method: :delete %>
+    <%= button_to "Destroy this course", school_course_path, method: :delete %>
   <% end %>
 </div>
