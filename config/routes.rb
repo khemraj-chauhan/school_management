@@ -9,5 +9,7 @@ Rails.application.routes.draw do
     get '/users/sign_out' => 'devise/sessions#destroy'
   end
 
-  resources :schools
+  resources :schools do
+    resources :courses
+  end
 end
