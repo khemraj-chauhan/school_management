@@ -19,6 +19,22 @@ class User < ApplicationRecord
     roles.pluck(:name).include?(role_name)
   end
 
+  def has_any_role?(*role_names)
+    role_names.flatten.any? { |r| roles.pluck(:name).include?(r) }
+  end
+
+  def admin?
+    self.has_role?("admin")
+  end
+
+  def school_admin?
+    self.has_role?("school_admin")
+  end
+
+  def student?
+    self.has_role?("student")
+  end
+
   private
 
   # def assign_role
