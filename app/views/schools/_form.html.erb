@@ -55,6 +55,23 @@
         <%= user_form.text_field :phone %>
       </div>
     <% end %>
+  <% else %>
+    <%= form.fields_for :admins do |school_admin| %>
+      <div>
+        <%= school_admin.label :school_admin_name, style: "display: block" %>
+        <%= school_admin.text_field :name %>
+      </div>
+
+      <div>
+        <%= school_admin.label :school_admin_email, style: "display: block" %>
+        <%= school_admin.text_field :email %>
+      </div>
+
+      <div>
+        <%= school_admin.label :school_admin_phone, style: "display: block" %>
+        <%= school_admin.text_field :phone %>
+      </div>
+    <% end %>
   <% end %>
 
   <div>
