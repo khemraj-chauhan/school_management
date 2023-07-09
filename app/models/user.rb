@@ -15,6 +15,8 @@ class User < ApplicationRecord
   has_many :courses, through: :schools
   has_many :student_batches, foreign_key: :student_id, dependent: :destroy
   has_many :batches, through: :student_batches
+  has_many :stundent_courses, -> { distinct }, through: :batches, source: :course
+  has_many :stundent_schools, -> { distinct }, through: :stundent_courses, source: :school
 
   scope :with_student_roles, -> { includes(:roles).where(roles: {name: "student"}) }
 
@@ -36,5 +38,9 @@ class User < ApplicationRecord
 
   def student?
     self.has_role?("student")
+  end
+
+  def any_admin?
+    self.has_role?("admin") || self.has_role?("school_admin")
   end
 end

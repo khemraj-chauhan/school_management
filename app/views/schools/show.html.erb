@@ -2,13 +2,20 @@
 
 <%= render @school %>
 
-<%= link_to "Manage Courses", school_courses_path(@school)%>
+<% if current_user.admin? || current_user.school_admin? %>
+  <div>
+    <%= link_to "Edit this school", edit_school_path(@school) %>
+  </div>
+<% end %>
+
+<% if current_user.admin? %>
+  <%= button_to "Destroy this school", @school, method: :delete %>
+<% end %>
 
 <div>
-  <%= link_to "Edit this school", edit_school_path(@school) %> |
-  <%= link_to "Back to schools", schools_path %>
+<%= link_to "Manage Courses", school_courses_path(@school)%> 
+</div>
 
-  <% if current_user.admin? %>
-    <%= button_to "Destroy this school", @school, method: :delete %>
-  <% end %>
+<div>
+<%= link_to "Back to schools", schools_path %>
 </div>

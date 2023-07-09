@@ -2,7 +2,7 @@ class SchoolsController < ApplicationController
   include SchoolsHelper
 
   before_action :validate_super_admin!, only: %i[ new create destroy ]
-  before_action :validate_admin!, except: %i[ new create destroy ]
+  before_action :validate_admin!, only: %i[ edit update ]
   before_action :set_school, only: %i[ show edit update destroy ]
 
   def index
@@ -10,6 +10,8 @@ class SchoolsController < ApplicationController
       @schools = School.all
     elsif current_user.school_admin?
       @schools = current_user.schools
+    elsif current_user.student?
+      @schools = current_user.stundent_schools
     end
   end
 
@@ -66,6 +68,12 @@ class SchoolsController < ApplicationController
   private
 
   def set_school
-    @school = current_user.admin? ? School.find(params[:id]) : current_user.schools.find(params[:id])
+    @school = if current_user.admin?
+      School.find(params[:id])
+    elsif current_user.school_admin?
+      current_user.schools.find(params[:id])
+    elsif current_user.student?
+      current_user.stundent_schools.find(params[:id])
+    end
   end
 end

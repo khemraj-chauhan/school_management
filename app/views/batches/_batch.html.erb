@@ -10,11 +10,12 @@
   </p>
 
   <% if batch.students.present? %>
-    <strong>Stundent Info:</strong>
-    <% batch.students.each do |student| %>
-      <p>
-        <span><%= student.name %> | <%= student.email%> | <%= student.phone %><span>
-      </p>
+    <% if current_user.any_admin? || current_user.batches.pluck(:id).include?(batch.id) %>
+      <strong>Students of this batch:</strong>
+      <p>Student ID | Name | Email | phone</p>
+      <% batch.students.each do |student| %>
+        <p><%= student.id %> | <%= student.name %> | <%= student.email %> | <%= student.phone %></p>
+      <% end %>
     <% end %>
   <% end %>
 </div>

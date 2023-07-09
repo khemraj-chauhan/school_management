@@ -4,11 +4,13 @@
 
 <%= link_to "Manage Batches", batches_path(course_id: @course.id) %>
 
-<div>
-  <%= link_to "Edit this course", edit_school_course_path %> |
-  <%= link_to "Back to courses", school_courses_path %>
-
-  <% if !current_user.student? %>
+<% if current_user.admin? || current_user.school_admin? %>
+  <div>
+    <%= link_to "Edit this course", edit_school_course_path %> |
     <%= button_to "Destroy this course", school_course_path, method: :delete %>
-  <% end %>
+  </div>
+<% end %>
+
+<div>
+  <%= link_to "Back to courses", school_courses_path %>
 </div>

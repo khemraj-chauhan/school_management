@@ -1,4 +1,5 @@
 class BatchesController < ApplicationController
+  before_action :validate_admin!, only: %i[ new create edit update destroy ]
   before_action :set_course
   before_action :set_batch, only: %i[ show edit update destroy ]
 
@@ -59,8 +60,10 @@ class BatchesController < ApplicationController
   def set_course
     if current_user.admin?
       @course = Course.find(params[:course_id])
-    else
+    elsif current_user.school_admin?
       @course = current_user.courses.find(params[:course_id])
+    elsif current_user.student?
+      @course = current_user.stundent_courses.find(params[:course_id])
     end
   end
 

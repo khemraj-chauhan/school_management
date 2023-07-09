@@ -11,7 +11,19 @@
   <% end %>
 </div>
 
+<div id="myCourse">
+  <% if @stundent_courses.present? %>
+    <h2>My Courses</h2>
+    <% @stundent_courses.each do |course| %>
+      <%= render course %>
+      <p>
+        <%= link_to "Show this course", [course.school, course] %></h3>
+      </p>
+    <% end %>
+  <% end %>
+</div>
+
 <% if !current_user.student? %>
   <%= link_to "Add course", new_school_course_path %>
-<% end %> | 
+<% end %>
 <%= link_to "Back to schools", schools_path %>

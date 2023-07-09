@@ -1,4 +1,6 @@
 class CoursesController < ApplicationController
+  before_action :validate_admin!, only: %i[ new create edit update destroy ]
+
   before_action :set_school
   before_action :set_course, only: %i[ show edit update destroy ]
 
@@ -57,7 +59,14 @@ class CoursesController < ApplicationController
   private
 
   def set_school
-    @school = current_user.schools.find(params[:school_id])
+    if current_user.admin?
+      @school = School.find(params[:school_id])
+    elsif current_user.school_admin?
+      @school = current_user.schools.find(params[:school_id])
+    elsif current_user.student?
+      @school = current_user.stundent_schools.find(params[:school_id])
+      @stundent_courses = current_user.stundent_courses.where(school_id: @school.id)
+    end
   end
 
   def set_course
