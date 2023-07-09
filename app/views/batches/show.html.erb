@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @batch %>
+
+<%= link_to "Add student on this batche", new_student_batch_path(batch_id: @batch.id) %>
+
+<div>
+  <%= link_to "Edit this batch", edit_batch_path(course_id: @course.id) %> |
+  <%= link_to "Back to batches", batches_path(course_id: @batch.course_id) %>
+
+  <% if !current_user.student? %>
+    <%= button_to "Destroy this batch", batch_path(@batch, {course_id: @course.id}), method: :delete %>
+  <% end %>
+</div>
