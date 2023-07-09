@@ -1,9 +1,7 @@
 <h1>Welcome to our school management page</h1>
 
-<% if current_user.has_role?("admin") %>
+<% if current_user.has_role?("admin") || (current_user.has_role?("school_admin") && current_user.schools.present?) %>
   <%= link_to "Manage Schools", schools_path%>
-<% elsif current_user.has_role?("school_admin")
-  # <%= link_to "My School", school_path%>
 <% end %>
 <br>
 <%= link_to "Sign out", destroy_user_session_path, :method => 'delete' %>
