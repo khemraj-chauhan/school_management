@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_08_094104) do
   create_table "batches", force: :cascade do |t|
     t.string "name"
     t.text "description"
+    t.integer "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
