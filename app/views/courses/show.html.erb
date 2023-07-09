@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @course %>
+
+<!-- <%= link_to "Manage Batches", school_courses_path(@school)%> -->
+
+<div>
+  <%= link_to "Edit this course", edit_school_course_path %> |
+  <%= link_to "Back to batches", school_courses_path %>
+
+  <% if !current_user.student? %>
+    <%= button_to "Destroy this school", school_course_path, method: :delete %>
+  <% end %>
+</div>
