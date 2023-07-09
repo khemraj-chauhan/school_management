@@ -2,9 +2,13 @@
 
 <%= render @school %>
 
+<%= link_to "Manage Courses", school_courses_path(@school)%>
+
 <div>
   <%= link_to "Edit this school", edit_school_path(@school) %> |
   <%= link_to "Back to schools", schools_path %>
 
-  <%= button_to "Destroy this school", @school, method: :delete %>
+  <% if current_user.admin? %>
+    <%= button_to "Destroy this school", @school, method: :delete %>
+  <% end %>
 </div>
