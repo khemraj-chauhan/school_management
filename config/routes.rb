@@ -15,5 +15,9 @@ Rails.application.routes.draw do
 
   resources :batches
 
-  resources :student_batches
+  resources :student_batches do
+    collection do
+      post :enrollment_request
+    end
+  end
 end

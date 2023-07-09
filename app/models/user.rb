@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :schools, through: :school_admins
   has_many :courses, through: :schools
   has_many :student_batches, foreign_key: :student_id, dependent: :destroy
+  has_many :approved_student_batches, -> { where(status: :approved) }, class_name: "StudentBatch", foreign_key: :student_id, dependent: :destroy
   has_many :batches, through: :student_batches
   has_many :stundent_courses, -> { distinct }, through: :batches, source: :course
   has_many :stundent_schools, -> { distinct }, through: :stundent_courses, source: :school

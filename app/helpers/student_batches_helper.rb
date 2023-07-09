@@ -17,7 +17,7 @@ module StudentBatchesHelper
     student = User.create!(user_params)
     student_role = Role.find_by_name("student")
     UserRole.create!(role_id: student_role.id, user_id: student.id)
-    @student_batch.update!(student_id: student.id)
+    @student_batch.update!(student_id: student.id, status: "approved")
   end
 
   def existing_student(student_id)
@@ -25,6 +25,6 @@ module StudentBatchesHelper
     student_batche = student.student_batches.find_by(batch_id: @student_batch.batch_id)
     return if student_batche.present?
 
-    @student_batch.update!(student_id: student.id)
+    @student_batch.update!(student_id: student.id, status: "approved")
   end
 end

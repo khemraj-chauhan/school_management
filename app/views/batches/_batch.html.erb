@@ -9,12 +9,29 @@
     <%= batch.name %>
   </p>
 
+  <% if current_user.student? && current_user.approved_student_batches.pluck(:batch_id).exclude?(batch.id) %>
+    <% if current_user.student_batches.pending.pluck(:batch_id).include?(batch.id) %>
+      <span> Your enrollment request is inprogress </span>
+    <% elsif current_user.student? && current_user.student_batches.blank? %>
+      <div>
+        <strong>Raise request for enrollment in this batch:</strong>
+        <%= button_to 'Raise request',enrollment_request_student_batches_path({batch_id: batch.id}), method: :post %>
+      </div>
+    <% end %>
+  <% end %>
+
   <% if batch.students.present? %>
-    <% if current_user.any_admin? || current_user.batches.pluck(:id).include?(batch.id) %>
+    <% if current_user.any_admin? || current_user.approved_student_batches.pluck(:batch_id).include?(batch.id) %>
       <strong>Students of this batch:</strong>
-      <p>Student ID | Name | Email | phone</p>
-      <% batch.students.each do |student| %>
-        <p><%= student.id %> | <%= student.name %> | <%= student.email %> | <%= student.phone %></p>
+      <p>Student ID | Name | Email | Phone | Enrollment Request ID | Batch Status</p>
+      <% batch.student_batches.each do |student_batch| %>
+        <% student = student_batch.student %>
+        <p><%= student.id %> | <%= student.name %> | <%= student.email %> | <%= student.phone %> | <%= student_batch.id %> | <%= student_batch.status %></p>
+        <% if student_batch.pending? && current_user.any_admin? %>
+          <span> Action on enrollment request  :  </span> 
+          <%= link_to 'Approve', edit_student_batch_path(student_batch, {status: "approved"}) %>
+          <%= link_to 'Reject', edit_student_batch_path(student_batch, {status: "rejected"}) %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
