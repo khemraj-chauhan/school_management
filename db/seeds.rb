@@ -11,6 +11,6 @@ Role.create!(name: "school_admin")
 Role.create!(name: "student")
 
 user = User.create!(
-	name: "khemraj", email: "khemraj@example.com", phone: "1212121212", password: "test123"
+	name: "khemraj", email: "khemraj@admin.com", phone: "1212121212", password: "test123"
 )
 UserRole.create!(role_id: admin_role.id, user_id: user.id)
