@@ -1,0 +1,90 @@
+<% if params[:action].eql?("new") %>
+  <% url = school_courses_path %>
+<% else %>
+  <% url = school_course_path(course.school) %>
+<% end %>
+
+<%= form_with(model: course, url: url) do |form| %>
+  <% if course.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(course.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% course.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+<!--   <%= form.fields_for :address do |address_form| %>
+    <div>
+      <%= address_form.label :location, style: "display: block" %>
+      <%= address_form.text_field :location %>
+    </div>
+
+    <div>
+      <%= address_form.label :city, style: "display: block" %>
+      <%= address_form.text_field :city %>
+    </div>
+
+    <div>
+      <%= address_form.label :state, style: "display: block" %>
+      <%= address_form.text_field :state %>
+    </div>
+
+    <div>
+      <%= address_form.label :pincode, style: "display: block" %>
+      <%= address_form.text_field :pincode %>
+    </div>
+  <% end %> -->
+<!-- 
+  <% if @school.new_record? %>
+    <%= form.fields_for :user do |user_form| %>
+      <div>
+        <%= user_form.label :school_admin_name, style: "display: block" %>
+        <%= user_form.text_field :name %>
+      </div>
+
+      <div>
+        <%= user_form.label :school_admin_email, style: "display: block" %>
+        <%= user_form.text_field :email %>
+      </div>
+
+      <div>
+        <%= user_form.label :school_admin_phone, style: "display: block" %>
+        <%= user_form.text_field :phone %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= form.fields_for :admins do |school_admin| %>
+      <div>
+        <%= school_admin.label :school_admin_name, style: "display: block" %>
+        <%= school_admin.text_field :name %>
+      </div>
+
+      <div>
+        <%= school_admin.label :school_admin_email, style: "display: block" %>
+        <%= school_admin.text_field :email %>
+      </div>
+
+      <div>
+        <%= school_admin.label :school_admin_phone, style: "display: block" %>
+        <%= school_admin.text_field :phone %>
+      </div>
+    <% end %>
+  <% end %> -->
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
