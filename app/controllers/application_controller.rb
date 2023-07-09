@@ -8,8 +8,17 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[phone name])
   end
 
-  def validate_admin!
+  def validate_super_admin!
     return if current_user.has_role?("admin")
+
+    respond_to do |format|
+      format.html { redirect_to root_path, alert: "You are not authorize user" }
+      format.json { head :no_content }
+    end
+  end
+
+  def validate_admin!
+    return if current_user.has_any_role?(["admin", "school_admin"])
 
     respond_to do |format|
       format.html { redirect_to root_path, alert: "You are not authorize user" }
