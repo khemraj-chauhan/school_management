@@ -66,6 +66,6 @@ class SchoolsController < ApplicationController
   private
 
   def set_school
-    @school = School.find(params[:id])
+    @school = current_user.admin? ? School.find(params[:id]) : current_user.schools.find(params[:id])
   end
 end
