@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
   before_action :set_course, only: %i[ show edit update destroy ]
 
   def index
-    @courses = Course.all
+    @courses = @school.courses
   end
 
   def new
@@ -57,11 +57,11 @@ class CoursesController < ApplicationController
   private
 
   def set_school
-    @school = School.find(params[:school_id])
+    @school = current_user.schools.find(params[:school_id])
   end
 
   def set_course
-    @course = Course.find(params[:id])
+    @course = @school.courses.find(params[:id])
   end
 
   def course_params
