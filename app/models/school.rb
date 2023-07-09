@@ -6,5 +6,7 @@ class School < ApplicationRecord
   has_many :school_admins, dependent: :destroy
   has_many :admins, through: :school_admins
 
-  accepts_nested_attributes_for :address
+  has_many :courses, dependent: :destroy
+
+  accepts_nested_attributes_for :address, :admins
 end
