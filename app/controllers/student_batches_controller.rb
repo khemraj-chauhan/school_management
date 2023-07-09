@@ -20,4 +20,23 @@ class StudentBatchesController < ApplicationController
       format.json { render json: exception.message, status: :unprocessable_entity }
     end
   end
+
+  def edit
+    student_batch = StudentBatch.find(params[:id])
+    params[:status].eql?("approved") ? student_batch.approved! : student_batch.rejected!
+
+    respond_to do |format|
+      format.html { redirect_to(request.referer) }
+      format.json { render :show, status: :created, location: student_batch }
+    end
+  end
+
+  def enrollment_request
+    student_batch = StudentBatch.create!(batch_id: params[:batch_id], student_id: current_user.id)
+
+    respond_to do |format|
+      format.html { redirect_to(request.referer) }
+      format.json { render :show, status: :created, location: student_batch }
+    end
+  end
 end
