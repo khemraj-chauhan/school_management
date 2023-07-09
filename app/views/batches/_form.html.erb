@@ -1,0 +1,35 @@
+<% if params[:action].eql?("new") %>
+  <% url = batches_path(course_id: @batch.course_id) %>
+<% else %>
+  <% url = batch_path(@batch, {course_id: @batch.course_id}) %>
+<% end %>
+
+<%= form_with(model: batch, url: url) do |form| %>
+  <% if batch.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(batch.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% batch.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+
+  <%= form.hidden_field :course_id, value: batch.course_id %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
