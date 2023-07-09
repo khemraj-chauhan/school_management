@@ -1,0 +1,17 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>List of Batches</h1>
+
+<div id="batch">
+  <% @batches.each do |batch| %>
+    <%= render batch %>
+    <p>
+      <%= link_to "Show this batch", batch_path(batch, {course_id: @course.id}) %></h2>
+    </p>
+  <% end %>
+</div>
+
+<% if !current_user.student? %>
+  <%= link_to "Add batch", new_batch_path(course_id: @course.id) %>
+<% end %> | 
+<%= link_to "Back to course", school_course_path({id: @course.id, school_id: @course.school.id}) %>
