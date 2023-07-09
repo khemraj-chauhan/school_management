@@ -1,11 +1,16 @@
 class SchoolsController < ApplicationController
   include SchoolsHelper
 
-  before_action :validate_admin!, except: %i[show edit update]
+  before_action :validate_super_admin!, only: %i[ new create destroy ]
+  before_action :validate_admin!, except: %i[ new create destroy ]
   before_action :set_school, only: %i[ show edit update destroy ]
 
   def index
-    @schools = School.all
+    if current_user.admin?
+      @schools = School.all
+    elsif current_user.school_admin?
+      @schools = current_user.schools
+    end
   end
 
   def new
@@ -15,7 +20,7 @@ class SchoolsController < ApplicationController
 
   def create
     @school = School.new(school_params)
-    onboard_school
+    onboard
     respond_to do |format|
       format.html { redirect_to school_url(@school), notice: "School was successfully created." }
       format.json { render :show, status: :created, location: @school }
@@ -33,17 +38,19 @@ class SchoolsController < ApplicationController
 
   def edit
     @address = @school.address || @school.build_address
+    @admins = @school.admins
   end
 
   def update
+    modification
     respond_to do |format|
-      if @school.update(school_params)
-        format.html { redirect_to school_url(@school), notice: "School was successfully updated." }
-        format.json { render :show, status: :ok, location: @school }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @school.errors, status: :unprocessable_entity }
-      end
+      format.html { redirect_to school_url(@school), notice: "School was successfully updated." }
+      format.json { render :show, status: :ok, location: @school }
+    end
+  rescue StandardError => exception
+    respond_to do |format|
+      format.html { render :edit, status: :unprocessable_entity }
+      format.json { render json: exception.message, status: :unprocessable_entity }
     end
   end
 
@@ -57,11 +64,6 @@ class SchoolsController < ApplicationController
   end
 
   private
-
-  def user_params
-    params[:school][:user][:password] = "test123"
-    params[:school][:user].permit(:name, :email, :phone, :password)
-  end
 
   def set_school
     @school = School.find(params[:id])
