@@ -39,14 +39,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_08_094104) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "enrollment_requests", force: :cascade do |t|
-    t.integer "student_id"
-    t.integer "batch_id"
-    t.string "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false

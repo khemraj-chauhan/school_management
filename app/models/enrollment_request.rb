@@ -1,2 +1,0 @@
-class EnrollmentRequest < ApplicationRecord
-end
