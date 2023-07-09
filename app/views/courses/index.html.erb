@@ -1,0 +1,17 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>List of Courses</h1>
+
+<div id="course">
+  <% @courses.each do |course| %>
+    <%= render course %>
+    <p>
+      <%= link_to "Show this course", [course.school, course] %></h2>
+    </p>
+  <% end %>
+</div>
+
+<% if !current_user.student? %>
+  <%= link_to "Add course", new_school_course_path %>
+<% end %> | 
+<%= link_to "Back to schools", schools_path %>
