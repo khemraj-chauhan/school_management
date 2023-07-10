@@ -1,9 +1,13 @@
-<h1>Welcome to our school management page</h1>
+<h1>Welcome to our school management webapp</h1>
 
-<% if current_user.has_role?("admin") || (current_user.has_role?("school_admin") && current_user.schools.present?) %>
-  <%= link_to "Manage Schools", schools_path%>
-<% elsif current_user.has_role?("student") %>
-  <%= link_to "My School Dashboard", schools_path%>
+<% if current_user.present? %>
+  <% if current_user.has_role?("admin") || (current_user.has_role?("school_admin") && current_user.schools.present?) %>
+    <%= link_to "Manage Schools", schools_path%>
+  <% elsif current_user.has_role?("student") %>
+    <%= link_to "My School Dashboard", schools_path%>
+  <% end %>
+  <br>
+  <%= link_to "Sign out", destroy_user_session_path, :method => 'delete' %>
+<% else %>
+  <%= link_to "Sign In", user_session_path%>
 <% end %>
-<br>
-<%= link_to "Sign out", destroy_user_session_path, :method => 'delete' %>
