@@ -3,8 +3,11 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery unless: -> { request.format.json? }
 
+  before_action :set_current_user, if: -> { request.format.json? }
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
+  
+  after_action :clear_current_user, if: -> { request.format.json? }
 
   private
 
@@ -30,15 +33,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_user
-    if request.format.json?
-      user = Base64.decode64(request.headers["Authorization"].split[1]).split(":")
-      if user[1].eql?("test123")
-        @current_user = User.find_by_email(user[0])
-        return @current_user
-      end
-    else
-      super
-    end
+  def set_current_user
+    email, password = Base64.decode64(request.headers["Authorization"].split[1]).split(":") rescue nil
+    user = User.find_by_email(email)
+    sign_in(:user, user) if user.valid_password?(password)
+  end
+
+  def clear_current_user
+    sign_out(current_user)
   end
 end
