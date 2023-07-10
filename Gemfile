@@ -75,3 +75,5 @@ end
 gem "devise", "~> 4.9"
 
 gem 'pry', '~> 0.14.2'
+
+gem "active_model_serializers"
