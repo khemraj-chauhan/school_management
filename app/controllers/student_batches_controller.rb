@@ -6,12 +6,10 @@ class StudentBatchesController < ApplicationController
   end
 
   def create
-    @student_batch = StudentBatch.new(batch_id: params[:student_batch][:batch_id])
-    add_stundent_on_batch
-
+    @student_batch = add_stundent_on_batch
     respond_to do |format|
       format.html { redirect_to batch_path(@student_batch.batch, {course_id: @student_batch.batch.course.id}), notice: "Student was successfully added into the batch." }
-      format.json { render :show, status: :created, location: @course }
+      format.json { render json: @student_batch, serializer: StudentBatchSerializer, status: :created }
     end
   rescue StandardError => exception
     flash[:error] = exception.message
@@ -27,7 +25,7 @@ class StudentBatchesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(request.referer) }
-      format.json { render :show, status: :created, location: student_batch }
+      format.json { render json: student_batch, serializer: StudentBatchSerializer, status: :ok }
     end
   end
 
@@ -36,7 +34,7 @@ class StudentBatchesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(request.referer) }
-      format.json { render :show, status: :created, location: student_batch }
+      format.json { render json: student_batch, serializer: StudentBatchSerializer, status: :created }
     end
   end
 end

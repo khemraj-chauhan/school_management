@@ -13,6 +13,11 @@ class SchoolsController < ApplicationController
     elsif current_user.student?
       @schools = current_user.stundent_schools
     end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @schools, each_serializer: SchoolSerializer, status: 200 }
+    end
   end
 
   def new
@@ -25,17 +30,21 @@ class SchoolsController < ApplicationController
     onboard
     respond_to do |format|
       format.html { redirect_to school_url(@school), notice: "School was successfully created." }
-      format.json { render :show, status: :created, location: @school }
+      format.json { render json: @school, serializer: SchoolSerializer, status: :created }
     end
   rescue StandardError => exception
     flash[:error] = exception.message
     respond_to do |format|
       format.html { render :new, status: :unprocessable_entity}
-      format.json { render json: exception.message, status: :unprocessable_entity }
+      format.json { render json: {data: [], error: exception.message}, status: :unprocessable_entity }
     end
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: @school, serializer: SchoolSerializer, status: 200 }
+    end
   end
 
   def edit
@@ -47,7 +56,7 @@ class SchoolsController < ApplicationController
     modification
     respond_to do |format|
       format.html { redirect_to school_url(@school), notice: "School was successfully updated." }
-      format.json { render :show, status: :ok, location: @school }
+      format.json { render json: @school, serializer: SchoolSerializer, status: :ok }
     end
   rescue StandardError => exception
     respond_to do |format|
@@ -61,7 +70,7 @@ class SchoolsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to schools_url, notice: "School was successfully destroyed." }
-      format.json { head :no_content }
+      format.json { render json: {data: [], message: "School was successfully destroyed."}, status: :ok }
     end
   end
 

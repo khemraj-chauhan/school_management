@@ -5,6 +5,11 @@ class BatchesController < ApplicationController
 
   def index
     @batches = @course.batches
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @batches, each_serializer: BatchSerializer, status: 200 }
+    end
   end
 
   def new
@@ -16,7 +21,7 @@ class BatchesController < ApplicationController
     @batch.save!
     respond_to do |format|
       format.html { redirect_to batch_path(@batch, {course_id: @batch.course_id}), notice: "Batch was successfully created." }
-      format.json { render :show, status: :created, location: @course }
+      format.json { render json: @batch, serializer: BatchSerializer, status: :created }
     end
   rescue StandardError => exception
     flash[:error] = exception.message
@@ -27,6 +32,10 @@ class BatchesController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: @batch, serializer: BatchSerializer, status: 200 }
+    end
   end
 
   def edit
@@ -37,7 +46,7 @@ class BatchesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to batch_path(@batch, {course_id: @batch.course_id}), notice: "Batch was successfully updated." }
-      format.json { render :show, status: :ok, location: @batch }
+      format.json { render json: @batch, serializer: BatchSerializer, status: :ok }
     end
   rescue StandardError => exception
     respond_to do |format|
@@ -51,7 +60,7 @@ class BatchesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to batches_path(course_id: @course.id), notice: "Batch was successfully destroyed." }
-      format.json { head :no_content }
+      format.json { render json: {data: [], message: "Batch was successfully destroyed."}, status: :ok }
     end
   end
 
@@ -63,7 +72,8 @@ class BatchesController < ApplicationController
     elsif current_user.school_admin?
       @course = current_user.courses.find(params[:course_id])
     elsif current_user.student?
-      @course = current_user.stundent_courses.find(params[:course_id])
+      # @course = current_user.stundent_courses.find(params[:course_id])
+      @course = current_user.stundent_courses.last.school.courses.find(params[:course_id])
     end
   end
 

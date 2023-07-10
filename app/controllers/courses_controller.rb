@@ -6,6 +6,11 @@ class CoursesController < ApplicationController
 
   def index
     @courses = @school.courses
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @courses, each_serializer: CourseSerializer, status: 200 }
+    end
   end
 
   def new
@@ -18,7 +23,7 @@ class CoursesController < ApplicationController
     @course.save!
     respond_to do |format|
       format.html { redirect_to school_courses_path(@school), notice: "Course was successfully created." }
-      format.json { render :show, status: :created, location: @course }
+      format.json { render json: @course, serializer: CourseSerializer, status: :created }
     end
   rescue StandardError => exception
     flash[:error] = exception.message
@@ -29,6 +34,10 @@ class CoursesController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: @course, serializer: CourseSerializer, status: 200 }
+    end
   end
 
   def edit
@@ -38,7 +47,7 @@ class CoursesController < ApplicationController
     @course.update(course_params)
     respond_to do |format|
       format.html { redirect_to school_course_path, notice: "Course was successfully updated." }
-      format.json { render :show, status: :ok, location: @course }
+      format.json { render json: @course, serializer: CourseSerializer, status: :ok }
     end
   rescue StandardError => exception
     respond_to do |format|
@@ -52,7 +61,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to school_courses_url, notice: "Course was successfully destroyed." }
-      format.json { head :no_content }
+      format.json { render json: {data: [], message: "Course was successfully destroyed."}, status: :ok }
     end
   end
 
