@@ -12,11 +12,13 @@
   <% if current_user.student? && current_user.approved_student_batches.pluck(:batch_id).exclude?(batch.id) %>
     <% if current_user.student_batches.pending.pluck(:batch_id).include?(batch.id) %>
       <span> Your enrollment request is inprogress </span>
-    <% elsif current_user.student? && current_user.student_batches.blank? %>
+    <% elsif current_user.student? && current_user.student_batches.where(batch_id: batch.id).blank? %>
       <div>
         <strong>Raise request for enrollment in this batch:</strong>
         <%= button_to 'Raise request',enrollment_request_student_batches_path({batch_id: batch.id}), method: :post %>
       </div>
+    <% elsif current_user.student? && current_user.student_batches.where(batch_id: batch.id).rejected.present? %>
+      <span> Your enrollment request has been rejected by school admin </span>
     <% end %>
   <% end %>
 
